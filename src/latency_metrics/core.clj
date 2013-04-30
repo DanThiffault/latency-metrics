@@ -5,13 +5,6 @@
   (:import [java.text SimpleDateFormat ParsePosition])
   (:import [java.util Date]))
 
-;; process a file from the following command
-;; ping 203.212.24.81 | while read pong; do echo "$(date): $pong"; done >> ping.log
-
-;; Run the following from a repl
-;(def plot-data (generate-plot-data (generate-results input-file-name)))
-;(plot-data-to-csv output-file-name plot-data)
-
 (def input-file-name "ping.log")
 (def output-file-name "latency-metrics.csv")
 (def log-date-format (SimpleDateFormat. "yyyy-MMM-dd-HH:mm:ss z"))
