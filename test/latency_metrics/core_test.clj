@@ -17,6 +17,7 @@
       (is (= 2000 (:time result)))))
   (testing "Gracefully handle noise"
     (is (contains? (parse-line "Fri Apr 26 18:46:04 IST 2013: --- 203.212.24.241 ping statistics ---" ) :parse-error))
+    (is (contains? (parse-line "Mon Apr 29 15:48:12 IST 2013: 92 bytes from smcwbr14s-n4.smc.com (192.168.2.1): Destination Net Unreachable" ) :parse-error))    
     (is (contains? (parse-line "Fri Apr 26 18:46:04 IST 2013: round-trip min/avg/max/stddev = 2.675/21.858/13005.142/373.103 ms" ) :parse-error))))
 
 (defn gen-result [time]

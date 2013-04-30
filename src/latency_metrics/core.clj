@@ -48,7 +48,8 @@
 
 (defmulti parse-segments 
   (fn [segments] 
-    (if (and (< 6 (count segments)) (or (= "---" (nth segments 6)) (= "round-trip" (nth segments 6)))) :default
+    (if (or (and (< 13 (count segments)) (= "Unreachable" (nth segments 13))) 
+            (and (< 6 (count segments)) (or (= "---" (nth segments 6)) (= "round-trip" (nth segments 6))))) :default
     (case (count segments)
       14 :success
       11 :timeout
@@ -166,5 +167,12 @@
 
 (defn chart-split [file-name split]
   "Create a chart of % requests >= the supplied split"
-  (let [split-data (generate-normalized-time-split (generate-results input-file-name) split)]
-    (view (bar-chart (map :timestamp split-data) (map #(* 100 (/ (:count-above %1) (:samples %1))) split-data) :y-label (str "% Above " split "ms") :x-label "time recorded"))))
+  (let [split-data (generate-normalized-time-split (generate-results input-file-name) split)
+        sorted-data (sort-by :timestamp split-data)]
+    (bar-chart (map :timestamp sorted-data) (map #(* 100 (/ (:count-above %1) (:samples %1))) sorted-data) :y-label "% above" :x-label "time recorded" :series-label "% above" :title (str "% Above " split "ms") )))
+
+(defn view-chart-split [file-name split]
+  (view (chart-split file-name split)))
+
+(defn save-chart-split [input-file-name split chart-file-name]
+  (save (chart-split input-file-name split) chart-file-name :width 1000 :height 800))
