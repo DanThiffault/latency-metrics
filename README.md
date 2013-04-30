@@ -23,7 +23,7 @@ lein repl
 ; export metrics to a csv. Make your own charts in Excel
 (def plot-data (generate-plot-data (generate-results input-file-name)))
 (plot-data-to-csv output-file-name plot-data)
-
+```
 
 ## License
 
